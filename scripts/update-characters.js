@@ -39,9 +39,10 @@ const OUTPUT_PATH = path.join(__dirname, '../src/characters.json');
 const DEFAULT_TEXT_CONFIG = {
   text: "something", // 默认空白文字
   x: 148,    // 画布宽度 296 的中心
-  y: 220,    // 底部预设位置
-  s: 40,     // 默认字号
-  r: 0       // 默认旋转角度
+  y: 58,    // 底部预设位置
+  s: -2,     // 默认字号
+  r: 47       // 默认旋转角度
+
 };
 
 function generateJSON() {
