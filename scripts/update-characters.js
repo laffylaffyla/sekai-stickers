@@ -49,7 +49,6 @@ function generateJSON() {
   const charactersData = [];
   let idCounter = 1;
 
-  // 获取所有子文件夹
   const folders = fs.readdirSync(IMG_DIR).filter(f => 
     fs.statSync(path.join(IMG_DIR, f)).isDirectory()
   );
@@ -60,23 +59,25 @@ function generateJSON() {
       /\.(png|jpe?g|webp)$/i.test(file)
     );
 
-    // 自然排序（确保 airi2 在 airi10 前面）
     files.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 
     files.forEach(fileName => {
+      // 提取不带后缀的文件名作为显示名称，例如 "Airi_01"
+      const displayName = path.parse(fileName).name.replace(/_/g, ' ');
+
       charactersData.push({
-        id: idCounter++,                                      // 自动递增 ID
-        name: charName,                                      // 角色名
-        img: `${charName}/${fileName}`,                      // 图片相对路径
-        color: COLOR_MAP[charName.toLowerCase()] || "#FFFFFF", // 匹配颜色
-        defaultText: { ...DEFAULT_TEXT_CONFIG }               // 默认配置
+        id: String(idCounter++),              // 插件通常要求 ID 是字符串
+        name: displayName,                    // 用于显示的名称 (例如 "Airi 01")
+        character: charName.toLowerCase(),     // 【关键修复】插件校验必需的字段 (例如 "airi")
+        img: `${charName}/${fileName}`,       
+        color: COLOR_MAP[charName.toLowerCase()] || "#FFFFFF",
+        defaultText: { ...DEFAULT_TEXT_CONFIG }
       });
     });
   });
 
-  // 写入文件（格式化为 2 空格缩进）
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(charactersData, null, 2), 'utf-8');
-  console.log(`✨ 成功！已重新生成 ${charactersData.length} 条记录。`);
+  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(charactersData, null, 4), 'utf-8'); // 建议用 4 空格缩进，方便查阅
+  console.log(`✨ 成功！已修复并生成 ${charactersData.length} 条记录。`);
 }
 
 generateJSON();
