@@ -41,13 +41,13 @@ const DEFAULT_TEXT_CONFIG = {
   x: 148,    // 画布宽度 296 的中心
   y: 58,    // 底部预设位置
   s: -2,     // 默认字号
-  r: 28       // 默认旋转角度
+  r: 47       // 默认旋转角度
 
 };
 
 function generateJSON() {
   const charactersData = [];
-  let idCounter = 1;
+  let idCounter = 3;
 
   const folders = fs.readdirSync(IMG_DIR).filter(f => 
     fs.statSync(path.join(IMG_DIR, f)).isDirectory()
